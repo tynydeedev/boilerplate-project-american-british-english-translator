@@ -22,8 +22,8 @@ class Translator {
 
   americanInput(input) {
     const sentence = input;
+    let returnSentence = input;
 
-    let returnSentence = sentence;
     // replace the words by iterate through the arrays and find matches
     for (let i = 0; i < americanArray.length; i++) {
       const regex = this.regexCreator(americanArray[i]);
@@ -40,26 +40,48 @@ class Translator {
         returnSentence = returnSentence.replace(regex, this.spanCreator(title.slice(0, title.length - 1)));
       }
     }
-    if (/(?<![\\w\\-])\d{2}:\d{2}(?![\\w\\-])/.test(returnSentence)) {
-      returnSentence = returnSentence.replace(/(?<![\\w\\-])(?<=\d{2}):(?=\d{2})(?![\\w\\-])/, '.')
-    }
-    
-    if (/^[a-z]/.test(returnSentence)) {
-      returnSentence = returnSentence.charAt(0).toUpperCase() + returnSentence.slice(1);
-    }
-    console.log(returnSentence);
+
+    // Convert the time
+    const timeRegex = /(?<=\d{1,2}):(?=\d{2})/;
+    if (timeRegex.test(returnSentence)) returnSentence = returnSentence.replace(timeRegex, '.');
+
+    if (/^[a-z]/.test(returnSentence)) returnSentence = returnSentence.charAt(0).toUpperCase() + returnSentence.slice(1);
+
     if (sentence === returnSentence) return 'No change';
+
     return returnSentence;
   }
 
   britishInput(input) {
     const sentence = input;
-
     let returnSentence = sentence;
+
     // replace the words by iterate through the values of the keys and find matches
-    for (let i = 0; i < americanArray.length; i++) {
-      
+    for (let i = 0; i < britishArray.length; i++) {
+      const regex = this.regexCreator(britishArray[i]);
+      if (regex.test(returnSentence)) returnSentence = returnSentence.replace(regex, this.spanCreator(britishOnly[britishArray[i]]));
     }
+    for (let i = 0; i < spellingArray.length; i++) {
+      const regex = this.regexCreator(americanToBritishSpelling[spellingArray[i]]);
+      if (regex.test(returnSentence)) returnSentence = returnSentence.replace(regex, this.spanCreator(spellingArray[i]));
+    }
+    for (let i = 0; i < titleArray.length; i++) {
+      const regex = this.regexCreator(americanToBritishTitles[titleArray[i]]);
+      if (regex.test(returnSentence)) {
+        const title = returnSentence.match(regex)[0];
+        returnSentence = returnSentence.replace(regex, this.spanCreator(title + '.'));
+      }
+    }
+
+    // Convert the time
+    const timeRegex = /(?<=\d{1,2}).(?=\d{2})/;
+    if (timeRegex.test(returnSentence)) returnSentence = returnSentence.replace(timeRegex, ':');
+
+    if (/^[a-z]/.test(returnSentence)) returnSentence = returnSentence.charAt(0).toUpperCase() + returnSentence.slice(1);
+
+    if (sentence === returnSentence) return 'No change';
+
+    return returnSentence;
   }
 }
 
