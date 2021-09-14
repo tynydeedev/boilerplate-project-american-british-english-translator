@@ -11,25 +11,37 @@ const britishOnly = require('./british-only.js')
 const britishArray = Object.keys(britishOnly);
 
 class Translator {
+  // Create new Regex that find the string but without any word or dash before or after
+  regexCreator(str) {
+    return new RegExp(`(?<![\\w\\-])${str}(?![\\w\\-])`, 'i');
+  }
+
+  spanCreator(str) {
+    return `<span class='highlight'>${str}</span>`
+  }
+
   americanInput(input) {
     const sentence = input;
 
     let returnSentence = sentence;
     // replace the words by iterate through the arrays and find matches
     for (let i = 0; i < americanArray.length; i++) {
-      const regex = new RegExp(`\\s${americanArray[i]}(?=[\\s\\.])`, 'i');
-      if (regex.test(returnSentence)) returnSentence = returnSentence.replace(regex, ` <span class='highlight'>${americanOnly[americanArray[i]]}</span> `);
+      const regex = this.regexCreator(americanArray[i]);
+      if (regex.test(returnSentence)) returnSentence = returnSentence.replace(regex, this.spanCreator(americanOnly[americanArray[i]]));
     }
     for (let i = 0; i < spellingArray.length; i++) {
-      const regex = new RegExp(`\\s${spellingArray[i]}\\s`, 'i');
-      if (regex.test(returnSentence)) returnSentence = returnSentence.replace(regex, ` <span class='highlight'>${americanToBritishSpelling[spellingArray[i]]}</span> `);
+      const regex = this.regexCreator(spellingArray[i]);
+      if (regex.test(returnSentence)) returnSentence = returnSentence.replace(regex, this.spanCreator(americanToBritishSpelling[spellingArray[i]]));
     }
     for (let i = 0; i < titleArray.length; i++) {
-      const regex = new RegExp(`\\s${titleArray[i]}\\s`, 'i');
+      const regex = this.regexCreator(titleArray[i]);
       if (regex.test(returnSentence)) {
         const title = returnSentence.match(regex)[0];
-        returnSentence = returnSentence.replace(regex, ` <span class='highlight'>${title.slice(0, title.length - 1)}</span> `);
+        returnSentence = returnSentence.replace(regex, this.spanCreator(title.slice(0, title.length - 1)));
       }
+    }
+    if (/(?<![\\w\\-])\d{2}:\d{2}(?![\\w\\-])/.test(returnSentence)) {
+      returnSentence = returnSentence.replace(/(?<![\\w\\-])(?<=\d{2}):(?=\d{2})(?![\\w\\-])/, '.')
     }
     
     if (/^[a-z]/.test(returnSentence)) {
@@ -38,6 +50,16 @@ class Translator {
     console.log(returnSentence);
     if (sentence === returnSentence) return 'No change';
     return returnSentence;
+  }
+
+  britishInput(input) {
+    const sentence = input;
+
+    let returnSentence = sentence;
+    // replace the words by iterate through the values of the keys and find matches
+    for (let i = 0; i < americanArray.length; i++) {
+      
+    }
   }
 }
 
