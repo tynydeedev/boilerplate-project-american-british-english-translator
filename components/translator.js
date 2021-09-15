@@ -43,7 +43,7 @@ class Translator {
 
     // Convert the time
     const timeRegex = /(?<=\d{1,2}):(?=\d{2})/;
-    if (timeRegex.test(returnSentence)) returnSentence = returnSentence.replace(timeRegex, '.');
+    if (timeRegex.test(returnSentence)) returnSentence = returnSentence.replace(timeRegex, this.spanCreator('.'));
 
     if (/^[a-z]/.test(returnSentence)) returnSentence = returnSentence.charAt(0).toUpperCase() + returnSentence.slice(1);
 
@@ -75,7 +75,7 @@ class Translator {
 
     // Convert the time
     const timeRegex = /(?<=\d{1,2}).(?=\d{2})/;
-    if (timeRegex.test(returnSentence)) returnSentence = returnSentence.replace(timeRegex, ':');
+    if (timeRegex.test(returnSentence)) returnSentence = returnSentence.replace(timeRegex, this.spanCreator(':'));
 
     if (/^[a-z]/.test(returnSentence)) returnSentence = returnSentence.charAt(0).toUpperCase() + returnSentence.slice(1);
 
