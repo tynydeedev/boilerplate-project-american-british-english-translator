@@ -13,7 +13,7 @@ const britishArray = Object.keys(britishOnly);
 class Translator {
   // Create new Regex that find the string but without any word or dash before or after
   regexCreator(str) {
-    return new RegExp(`(?<![\\w\\-])${str}(?![\\w\\-])`, 'i');
+    return new RegExp(`(?<![\\w\\-])${str}(?![\\w\\-])`, 'ig');
   }
 
   spanCreator(str) {
@@ -42,8 +42,11 @@ class Translator {
     }
 
     // Convert the time
-    const timeRegex = /(?<=\d{1,2}):(?=\d{2})/;
-    if (timeRegex.test(returnSentence)) returnSentence = returnSentence.replace(timeRegex, this.spanCreator('.'));
+    const timeRegex = /\d{1,2}:\d{2}/;
+    while (timeRegex.test(returnSentence)) {
+      let match = returnSentence.match(timeRegex)[0]
+      returnSentence = returnSentence.replace(timeRegex, this.spanCreator(match.replace(':', '.')));
+    }
 
     if (/^[a-z]/.test(returnSentence)) returnSentence = returnSentence.charAt(0).toUpperCase() + returnSentence.slice(1);
 
@@ -74,8 +77,11 @@ class Translator {
     }
 
     // Convert the time
-    const timeRegex = /(?<=\d{1,2}).(?=\d{2})/;
-    if (timeRegex.test(returnSentence)) returnSentence = returnSentence.replace(timeRegex, this.spanCreator(':'));
+    const timeRegex = /\d{1,2}.\d{2}/;
+    while (timeRegex.test(returnSentence)) {
+      let match = returnSentence.match(timeRegex)[0];
+      returnSentence = returnSentence.replace(timeRegex, this.spanCreator(match.replace('.', ':')));
+    };
 
     if (/^[a-z]/.test(returnSentence)) returnSentence = returnSentence.charAt(0).toUpperCase() + returnSentence.slice(1);
 
