@@ -17,7 +17,7 @@ class Translator {
   }
 
   spanCreator(str) {
-    return `<span class='highlight'>${str}</span>`
+    return `<span class="highlight">${str}</span>`
   }
 
   americanInput(input) {
