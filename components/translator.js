@@ -44,7 +44,7 @@ class Translator {
     // Convert the time
     const timeRegex = /\d{1,2}:\d{2}/;
     while (timeRegex.test(returnSentence)) {
-      let match = returnSentence.match(timeRegex)[0]
+      let match = returnSentence.match(timeRegex)[0];
       returnSentence = returnSentence.replace(timeRegex, this.spanCreator(match.replace(':', '.')));
     }
 
@@ -77,7 +77,7 @@ class Translator {
     }
 
     // Convert the time
-    const timeRegex = /\d{1,2}.\d{2}/;
+    const timeRegex = /\d{1,2}\.\d{2}/;
     while (timeRegex.test(returnSentence)) {
       let match = returnSentence.match(timeRegex)[0];
       returnSentence = returnSentence.replace(timeRegex, this.spanCreator(match.replace('.', ':')));
