@@ -92,5 +92,24 @@ suite('Unit Tests', () => {
       const output = translator.britishInput("Tea time is usually around 4 or 4.30.");
       assert.include(output, '4:30', 'should change 4.30 to 4:30');
     })
+  });
+
+  suite('Highlight testing', () => {
+    test('1st sentence', () => {
+      const output = translator.americanInput('Mangoes are my favorite fruit.');
+      assert.include(output, '</span>', 'should include span tag');
+    });
+    test('2st sentence', () => {
+      const output = translator.americanInput('I ate yogurt for breakfast.');
+      assert.include(output, '</span>', 'should include span tag');
+    });
+    test('3rd sentence', () => {
+      const output = translator.britishInput('We watched the footie match for a while.');
+      assert.include(output, '</span>', 'should include span tag');
+    });
+    test('4th sentence', () => {
+      const output = translator.britishInput('Paracetamol takes up to an hour to work.');
+      assert.include(output, '</span>', 'should include span tag');
+    });
   })
 });

@@ -47,7 +47,7 @@ class Translator {
 
     if (/^[a-z]/.test(returnSentence)) returnSentence = returnSentence.charAt(0).toUpperCase() + returnSentence.slice(1);
 
-    if (sentence === returnSentence) return 'No change';
+    if (sentence === returnSentence) return 'Everything looks good to me!';
 
     return returnSentence;
   }
@@ -79,7 +79,7 @@ class Translator {
 
     if (/^[a-z]/.test(returnSentence)) returnSentence = returnSentence.charAt(0).toUpperCase() + returnSentence.slice(1);
 
-    if (sentence === returnSentence) return 'No change';
+    if (sentence === returnSentence) return 'Everything looks good to me!';
 
     return returnSentence;
   }
